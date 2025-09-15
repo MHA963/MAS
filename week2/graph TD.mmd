@@ -1,0 +1,39 @@
+graph TD
+    subgraph Multi-Agent System
+        A[Agent 1] -->|Perceives| E[Environment]
+        B[Agent 2] -->|Perceives| E
+        C[Agent N] -->|Perceives| E
+        E -->|Feedback| A
+        E -->|Feedback| B
+        E -->|Feedback| C
+        
+        subgraph Agent Architecture
+            A1[Perception] --> A2[Decision]
+            A2 --> A3[Action]
+            A3 -->|Executes| E
+            A4[Internal State] --> A2
+            A1 -->|Updates| A4
+        end
+        
+        subgraph Subsumption Example
+            S1[Layer 1: Obstacle Avoidance] -->|Suppresses| S2[Layer 2: Circle Following]
+            S2 -->|Goal-Driven| E
+        end
+        
+        subgraph BDI Example
+            B1[Beliefs] --> B2[Desires]
+            B2 --> B3[Intentions]
+            B3 --> B4[Planning]
+            B4 -->|Executes| E
+            B1 -->|Updated by| A1
+        end
+        
+        subgraph Boids Leader-Follower
+            L[Leader Agent] -->|Position| F1[Follower 1]
+            L -->|Position| F2[Follower N]
+            F1 -->|Separation, Cohesion| F2
+            F2 -->|Alignment| F1
+            F1 -->|Acts| E
+            F2 -->|Acts| E
+        end
+    end
