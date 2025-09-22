@@ -1,0 +1,23 @@
+world:
+  height: 10
+  width: 10
+  step_time: 0.1
+  sample_time: 0.1
+  control_mode: auto
+  collision_mode: unobstructed  # avoids stopping due to collisions
+
+robot:
+  - number: 1
+    distribution: {name: 'circle', radius: 2.0, center: [5, 5]}
+    kinematics: {name: 'diff'}
+    shape: [{name: 'circle', radius: 0.2}]
+    behavior: {name: 'circle_follow', center: [5, 5], radius: 2.0}
+    vel_min: [-2, -2]
+    vel_max: [2, 2]
+    color: ['blue']
+    goal_threshold: 0.1
+    plot:
+      show_trail: true
+      show_goal: true
+      trail_fill: true
+      trail_alpha: 0.2
