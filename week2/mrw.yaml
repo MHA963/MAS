@@ -1,0 +1,66 @@
+world:
+  height: 50
+  width: 50
+  step_time: 0.1
+  sample_time: 0.1
+  offset: [0, 0]
+  collision_mode: 'stop'
+  control_mode: 'auto'
+
+robot:
+  - number: 3
+    distribution: {name: 'manual'}
+    kinematics: {name: 'diff'}
+    shape:
+      - {name: 'circle', radius: 0.2}
+    state:
+      # 3 robots spaced 120° apart on the circle (center 25,25 radius 10)
+      - [35, 25, 0]   # 0°
+      - [20, 33.66, 0]   # 120°
+      - [20, 16.34, 0]   # 240°
+    goal:
+      - [35, 25, 0]
+      - [20, 33.66, 0]
+      - [20, 16.34, 0]
+    behavior:
+      - {name: 'dash'}
+      - {name: 'dash'}
+      - {name: 'dash'}
+    color:
+      - 'royalblue'
+      - 'red'
+      - 'green'
+    plot:
+      show_goal: True
+      show_trajectory: True
+      show_text: True
+
+
+
+
+# obstacle:
+#   - name: 'center_marker'
+#     shape: {name: 'circle', radius: 0.2}
+#     state: [25, 25, 0]
+#     color: 'r'
+  
+#   # Optional: Add boundary markers
+#   - name: 'target_circle_marker_1'
+#     shape: {name: 'circle', radius: 0.1}
+#     state: [35, 25, 0]
+#     color: 'g'
+  
+#   - name: 'target_circle_marker_2'
+#     shape: {name: 'circle', radius: 0.1}
+#     state: [25, 35, 0]
+#     color: 'g'
+  
+#   - name: 'target_circle_marker_3'
+#     shape: {name: 'circle', radius: 0.1}
+#     state: [15, 25, 0]
+#     color: 'g'
+  
+#   - name: 'target_circle_marker_4'
+#     shape: {name: 'circle', radius: 0.1}
+#     state: [25, 15, 0]
+#     color: 'g'
