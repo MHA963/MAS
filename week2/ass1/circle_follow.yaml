@@ -1,0 +1,87 @@
+world:
+  map: {size: [20, 20], grid_size: 0.05, boundary: true}
+
+robot:
+  - id: 1
+    kinematics: {name: diff}
+    shape: {name: circle, radius: 0.2}
+    state: [5.0, 6.0, 0.0]
+    vel_min: [0.0, -1.5]
+    vel_max: [1.0,  1.5]
+    behavior: {name: 'rl_passive', center: [5.0, 5.0], radius: 0.6}
+
+  - id: 2
+    kinematics: {name: diff}
+    shape: {name: circle, radius: 0.2}
+    state: [5.0, 7.0, 0.0]
+    vel_min: [0.0, -1.5]
+    vel_max: [1.0,  1.5]
+    behavior: {name: 'rl_passive', center: [5.0, 5.0], radius: 1.2}
+
+  - id: 3
+    kinematics: { name: diff }
+    shape: { name: circle, radius: 0.2 }
+    state: [ 5.0, 8.0, 0.0 ]
+    vel_min: [ 0.0, -1.5 ]
+    vel_max: [ 1.0,  1.5 ]
+    behavior: { name: 'rl_passive' , center: [5.0, 5.0], radius: 1.8}
+
+  - id: 4
+    kinematics: { name: diff }
+    shape: { name: circle, radius: 0.2 }
+    state: [ 8.0, 8.0, 0.0 ]
+    vel_min: [ 0.0, -1.5 ]
+    vel_max: [ 1.0,  1.5 ]
+    behavior: { name: 'rl_passive', center: [ 8.0, 8.0 ], radius: 0.5}
+
+  - id: 5
+    kinematics: { name: diff }
+    shape: { name: circle, radius: 0.2}
+    state: [ 2.0, 8.0, 0.0 ]
+    vel_min: [ 0.0, -1.5 ]
+    vel_max: [ 1.0,  1.5 ]
+    behavior: { name: 'rl_passive', center: [ 2.0, 8.0 ], radius: 0.5 }
+
+  - id: 6
+    kinematics: { name: diff }
+    shape: { name: circle, radius: 0.2 }
+    state: [ 8.0, 2.0, 0.0 ]
+    vel_min: [ 0.0, -1.5 ]
+    vel_max: [ 1.0,  1.5 ]
+    behavior: { name: 'rl_passive' , center: [ 8.0, 2.0 ], radius: 0.5}
+
+  - id: 7
+    kinematics: {name: diff}
+    shape: {name: circle, radius: 0.2}
+    state: [5.0, 4.0, 0.0]
+    vel_min: [0.0, -1.5]
+    vel_max: [1.0,  1.5]
+    behavior: {name: 'rl_passive', center: [5.0, 5.0], radius: 0.6}
+
+  - id: 8
+    kinematics: {name: diff}
+    shape: {name: circle, radius: 0.2}
+    state: [5.0, 3.0, 0.0]
+    vel_min: [0.0, -1.5]
+    vel_max: [1.0,  1.5]
+    behavior: {name: 'rl_passive', center: [5.0, 5.0], radius: 1.2}
+
+  - id: 9
+    kinematics: { name: diff }
+    shape: { name: circle, radius: 0.2 }
+    state: [ 5.0, 2.0, 0.0 ]
+    vel_min: [ 0.0, -1.5 ]
+    vel_max: [ 1.0,  1.5 ]
+    behavior: { name: 'rl_passive' , center: [5.0, 5.0], radius: 1.8}
+
+  - id: 10
+    kinematics: { name: diff }
+    shape: { name: circle, radius: 0.2 }
+    state: [ 7.0, 2.0, 0.0 ]
+    vel_min: [ 0.0, -1.5 ]
+    vel_max: [ 1.0,  1.5 ]
+    behavior: { name: 'rl_passive' , center: [2.0, 2.0], radius: 0.5}
+obstacle: []
+
+
+

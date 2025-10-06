@@ -2,20 +2,14 @@
 import numpy as np
 from math import atan2, pi
 from irsim.lib import register_behavior
-import weakref
 
-_PEERS = []
+
 _GAMMA = 0.99     # used in (I - γP)V = R
 
 # policy π parameters
 _V0 = 0.6
 _KW = 1.2
 _KR = 0.6
-
-# obstacle avoidance parameters
-_OBS_THRESHOLD = 0.8   # threshold
-_AVOID_SPEED   = 0.1
-_AVOID_TURN    = 1.5
 
 
 
@@ -30,19 +24,6 @@ _Rsum  = np.zeros((_S,), dtype=np.float32)      # ∑r(s)
 _V     = np.zeros((_S,), dtype=np.float32)      # estimated V(s)
 _last_state = None
 
-# quality metrics parameters
-_Thres = 0.8
-_M = {
-    "steps" : 0,
-    "sum_abs_er" : 0.0,
-    "sum_abs_dth" : 0.0,
-    "on_target_steps" : 0,
-    "avoid_steps" : 0,
-    "sep_min" : float("inf"),
-    "sep_sum" : 0.0,
-    "sep_count":0,
-}
-
 
 _ADP_EVERY = 200
 _step = 0
@@ -52,46 +33,8 @@ def passive_save(path="circle follow.npz"):
              bins_d=BIN_D, bins_th=BIN_TH, dmax=D_MAX)
 
 # ==== tools ====
-def _register_peer(ego):
-    for w in _PEERS:
-        if w() is ego:
-            return
-    _PEERS.append(weakref.ref(ego))
-
-def _nearest_sep_from_peers(ego):
-    if not hasattr(ego, "state"):
-        return None
-    ex, ey = float(ego.state[0]), float(ego.state[1])
-    m = float("inf")
-    for w in _PEERS:
-        other = w()
-        if (other is None) or (other is ego) or (not hasattr(other, "state")):
-            continue
-        ox, oy = float(other.state[0]), float(other.state[1])
-        d = np.hypot(ox - ex, oy - ey)
-        if d < m:
-            m = d
-    return (None if m == float("inf") else m)
-
 def _wrap(a):  # wrap to [-pi,pi]
     return (a + pi) % (2 * pi) - pi
-
-def metrics_p():
-    steps = max(_M["steps"],1)
-    report = {
-        # agent level
-        "mean_radial_error" : _M["sum_abs_er"] / steps,
-        "mean_angular_error" : _M["sum_abs_dth"] / steps,
-        "time_on_target_ratio": _M["on_target_steps"] / steps,
-
-        # group level
-        "avoid_ratio":_M["avoid_steps"] / steps,
-        "min_separation": (_M["sep_min"] if _M["sep_min"] != float("inf") else None),
-        "mean_separation": (_M["sep_sum"]/_M["sep_count"] if _M["sep_count"] > 0 else None),
-        "steps" : steps,
-    }
-    print("[Metrics]", {k: (round(v, 4) if isinstance(v, float) else v) for k, v in report.items()})
-    return report
 
 def _ensure_circle_params(ego,**kwargs):
     #  default value: center[5.0, 5.0],radius 1.0, changed through yaml file
@@ -166,6 +109,7 @@ def RL_passive(ego_object, objects=None, *args, **kwargs):
     if getattr(ego_object, "collision", False):
         r_now -= 10.0
 
+
     # count（previous -> current state）
     if _last_state is not None:
         _trans[_last_state, state_now] += 1.0
@@ -198,55 +142,16 @@ def RL_passive(ego_object, objects=None, *args, **kwargs):
     _glob["n"] += 1
     _glob["md"] = 0.99 * _glob["md"] + 0.01 * dist    # exponential moving average
     setattr(RL_passive, "_stat", _glob)
-    _M["steps"] += 1
-    _M["sum_abs_er"] += abs(e_r)
-    _M["sum_abs_dth"] += abs(dth)
-    if dist < _Thres:
-        _M["on_target_steps"] += 1
     return _shape_like_ref([v, w], getattr(ego_object, "vel_min", None))
 
-def _check_obstacle(ego, objects):
-
-    if objects is None:
-        return False
-    ex, ey, eth = ego.state[0], ego.state[1], ego.state[2]
-    for obj in objects:
-        if not hasattr(obj, "state"):
-            continue
-        ox, oy = obj.state[0], obj.state[1]
-        dx, dy = ox - ex, oy - ey
-        dist = np.hypot(dx, dy)
-        angle = atan2(dy, dx) - eth
-        angle = (angle + pi) % (2*pi) - pi
-        if dist < _OBS_THRESHOLD and abs(angle) < pi/4:  #  ±45°
-            return True
-    return False
 
 
 
 # ==== register behavior：（policy fixed，estimate V only） ====
 @register_behavior("diff", "rl_passive")
 def subsumption_nav(ego_object, objects=None, *args, **kwargs):
-    #calculate min_separation and mean_separation
-    _register_peer(ego_object)
-    min_sep = _nearest_sep_from_peers(ego_object)
-    if min_sep is not None:
-        _M["sep_min"]  = min(_M["sep_min"], min_sep)
-        _M["sep_sum"] += min_sep
-        _M["sep_count"] += 1
-    #obstacle judgement
-    trigger_avoid = (
-        _check_obstacle(ego_object, objects) or
-        (min_sep is not None and min_sep < _OBS_THRESHOLD) or
-        getattr(ego_object, "collision", False)
-    )
+    v, w = RL_passive(ego_object, objects, *args, **kwargs)   #  RL_passive
+    return np.array([v, w], dtype=np.float32)
 
-    if trigger_avoid: # check obstacle first
-        _M["avoid_steps"] +=1
-        v, w = _AVOID_SPEED, _AVOID_TURN
-    else:
-        v, w = RL_passive(ego_object, objects, *args, **kwargs)   #  RL_passive
-
-    return _shape_like_ref([v, w], getattr(ego_object, "vel_min", None))
 
 

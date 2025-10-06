@@ -16,7 +16,5 @@ robot:
   vel_max: [3, 1]
   vel_min: [-3, -1]
   behavior: {name: 'dash', wander: false} 
-  plot:
-      show_goal: True
-      show_trajectory: True
-      show_text: True
+
+
