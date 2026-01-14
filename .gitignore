@@ -1,0 +1,17 @@
+*.pyc
+__pycache__/
+.env
+.vscode/
+node_modules/
+# Python-specific
+.python-version
+
+# Jupyter Notebook-specific
+.ipynb_checkpoints/
+
+# MAS course-specific
+.Rhistory
+.Rdata
+.project
+.buildpath
+.settings/
