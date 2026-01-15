@@ -524,7 +524,6 @@ where \(\eta_{ij}\) is heuristic info (e.g., 1/distance)[3]
 
 ***
 
-## **GitHub Code Repository**
 
 [1](https://ppl-ai-file-upload.s3.amazonaws.com/web/direct-files/collection_a8f869e6-ae25-4867-9d0c-245b68da1bce/c28621fd-479f-4487-813f-03b6649b2096/1-introduction_25.pdf)
 [2](https://ppl-ai-file-upload.s3.amazonaws.com/web/direct-files/collection_a8f869e6-ae25-4867-9d0c-245b68da1bce/3c9172a3-b8fa-4348-9d97-4be1b416ea09/3-agent-reasoning.pdf)
