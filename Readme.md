@@ -61,13 +61,3 @@ Department of Engineering, Aarhus University
     [Getting Started With Turtlebot3 (ignore camera and Matlab parts)](https://github.com/gitting-around/swrob-01-Exercises/blob/master/Matlab%20and%20ROS/ExerciseGettingStartedWithTurtlebot3.md)
 
 ---
-
-## How to Start
-
-- Find your team (Groups of 3 or 4, and no more)
-- Install the simulator
-- Try out the examples shown on GitHub
-- Investigate how you can:
-    - Add custom behaviour to your agent
-    - Create groups of agents with different characteristics
-    - Make agents communicate
